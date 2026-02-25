@@ -18,7 +18,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 	Thread thread;
 	Camera mainCam;
 	Tile[] tiles;
-	Image db;
+	Image doubleBuffer;
 
 	
 	
@@ -46,20 +46,20 @@ public class Game extends Applet implements Runnable, KeyListener {
 
 	}
 	
-		public void update(Graphics g) {
-	    
+	
+	// draws onto the double buffer first, then when that is done, draw onto screen
+	public void update(Graphics g) {
+		
 		Dimension size = getSize();
-		if (db == null || db.getWidth(this) != size.width || db.getHeight(this) != size.height) {
-			db = createImage(size.width, size.height); // create buffer/image that matches screen
+		if (doubleBuffer == null || doubleBuffer.getWidth(this) != size.width || doubleBuffer.getHeight(this) != size.height) {
+			doubleBuffer = createImage(size.width, size.height); 
 		}
 		
-		
-		
-		if (db != null) {
-			Graphics g2 = db.getGraphics();
+		if (doubleBuffer != null) {
+			Graphics g2 = doubleBuffer.getGraphics();
 			paint(g2);
 			g2.dispose();
-			g.drawImage(db, 0, 0, null);
+			g.drawImage(doubleBuffer, 0, 0, null);
 		} else {
 			
 			paint(g);
@@ -86,24 +86,15 @@ public class Game extends Applet implements Runnable, KeyListener {
 		
 		while (true) {
 			
-			if (player.RIGHT) player.x += player.moveSpeed;
-			if (player.LEFT) player.x -= player.moveSpeed;
-			if (player.UP) player.y -= player.moveSpeed;
-			if (player.DOWN) player.y += player.moveSpeed;
 		
-			
-			if (player.x >= 0) {
-				mainCam.setPositionX(player.x);
-			}
-			
-			if (player.y <= 640) {
-				mainCam.setPositionY(player.y);
-			}
-			
+			movePlayer();
+			updateCameraPosition();
 			
 			repaint();
+			
+			// as of right now this is fixed, but later we could use deltaTime method
 			try {
-				Thread.sleep(1000/60);
+				Thread.sleep(1000/60); 
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -138,14 +129,24 @@ public class Game extends Applet implements Runnable, KeyListener {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
+	public void keyTyped(KeyEvent e) {}
+	
+	public void updateCameraPosition() {
+		if (player.x >= 0) {
+			mainCam.setPositionX(player.x);
+		}
 		
+		if (player.y <= 640) {
+			mainCam.setPositionY(player.y);
+		}
 	}
 	
-	// if I want to limit camera movement, I could say 
-	// if 
-	
+	public void movePlayer() {
+		if (player.RIGHT) player.x += player.moveSpeed;
+		if (player.LEFT) player.x -= player.moveSpeed;
+		if (player.UP) player.y -= player.moveSpeed;
+		if (player.DOWN) player.y += player.moveSpeed;
+	}
 	
 
 }
