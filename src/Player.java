@@ -25,6 +25,10 @@ public class Player extends Mob {
 		g.fillRect(screenX - w, screenY - h, w, h);
 	}
 	
+	/* As of right now diagonal movement is faster than normal
+	 * this is due to the vectors magnitude being a bit more 
+	 * not a big deal but could normalize the direction
+	 * */
 	public void setDir(int x, int y) {
 		dir[0] = x;
 		dir[y] = y;

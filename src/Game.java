@@ -31,7 +31,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 		mainCam.setPosition(player.x, player.y);
 	
 		
-		
 		tiles = new Tile[3];
 		tiles[0] = new Tile(640,0);
 		tiles[1] = new Tile(0,640);
@@ -46,27 +45,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 
 	}
 	
-	
-	// draws onto the double buffer first, then when that is done, draw onto screen
-	public void update(Graphics g) {
-		
-		Dimension size = getSize();
-		if (doubleBuffer == null || doubleBuffer.getWidth(this) != size.width || doubleBuffer.getHeight(this) != size.height) {
-			doubleBuffer = createImage(size.width, size.height); 
-		}
-		
-		if (doubleBuffer != null) {
-			Graphics g2 = doubleBuffer.getGraphics();
-			paint(g2);
-			g2.dispose();
-			g.drawImage(doubleBuffer, 0, 0, null);
-		} else {
-			
-			paint(g);
-		}
-		
-		
-	}
 	
 	public void paint(Graphics g) {
 		g.clearRect(0, 0, getWidth(), getHeight());
@@ -83,10 +61,8 @@ public class Game extends Applet implements Runnable, KeyListener {
 	
 	public void run() {
 		
-		
 		while (true) {
 			
-		
 			movePlayer();
 			updateCameraPosition();
 			
@@ -128,9 +104,11 @@ public class Game extends Applet implements Runnable, KeyListener {
 		
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {}
 	
+	
+	/* Limits camera movement if player's x/y are within certain bounds
+	 * Gives the idea there's a wall, but still need to add collision zones
+	 * */
 	public void updateCameraPosition() {
 		if (player.x >= 0) {
 			mainCam.setPositionX(player.x);
@@ -148,5 +126,26 @@ public class Game extends Applet implements Runnable, KeyListener {
 		if (player.DOWN) player.y += player.moveSpeed;
 	}
 	
-
+	// draws onto the double buffer first, then when that is done, draw onto screen
+	public void update(Graphics g) {
+		
+		Dimension size = getSize();
+		if (doubleBuffer == null || doubleBuffer.getWidth(this) != size.width || doubleBuffer.getHeight(this) != size.height) {
+			doubleBuffer = createImage(size.width, size.height); 
+		}
+			
+		if (doubleBuffer != null) {
+			Graphics g2 = doubleBuffer.getGraphics();
+			paint(g2);
+			g2.dispose();
+			g.drawImage(doubleBuffer, 0, 0, null);
+		} else {
+				
+			paint(g);
+		}
+			
+	}
+	
+	@Override
+	public void keyTyped(KeyEvent e) {}
 }
