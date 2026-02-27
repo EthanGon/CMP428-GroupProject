@@ -66,6 +66,10 @@ public class Game extends Applet implements Runnable, KeyListener {
 			movePlayer();
 			updateCameraPosition();
 			
+			if (mainCam.screenWidth != this.getWidth() || mainCam.screenHeight != this.getHeight()) {
+				mainCam.updateScreenSize(this.getWidth(), this.getHeight());
+			}
+			
 			repaint();
 			
 			// as of right now this is fixed, but later we could use deltaTime method
