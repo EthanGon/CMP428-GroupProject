@@ -19,8 +19,10 @@ public class Player extends Mob {
 
 	@Override
 	public void draw(Graphics g) {
-		int screenX = x - Camera.getInstance().x + 1280/2;
-		int screenY = y - Camera.getInstance().y + 720/2;
+//		int screenX = x - Camera.getInstance().x + 1280/2;
+//		int screenY = y - Camera.getInstance().y + 720/2;
+		int screenX = Camera.getInstance().projectX(x);
+		int screenY = Camera.getInstance().projectY(y);
 		
 		g.fillRect(screenX - w, screenY - h, w, h);
 	}
