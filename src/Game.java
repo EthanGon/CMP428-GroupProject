@@ -32,9 +32,9 @@ public class Game extends Applet implements Runnable, KeyListener {
 	
 		
 		tiles = new Tile[3];
-		tiles[0] = new Tile(640,0);
-		tiles[1] = new Tile(0,640);
-		tiles[2] = new Tile(0,-640);
+		tiles[0] = new Tile(0,0);
+		
+		
 		
 		
 		thread = new Thread(this);
@@ -50,12 +50,13 @@ public class Game extends Applet implements Runnable, KeyListener {
 		g.clearRect(0, 0, getWidth(), getHeight());
 		
 		tiles[0].draw(g);
-		tiles[1].draw(g);
-		tiles[2].draw(g);
+		
 
 		
 		g.setColor(Color.red);
 		player.draw(g);
+		
+		mainCam.drawCameraBounds(g);
 	}
 
 	
@@ -65,10 +66,8 @@ public class Game extends Applet implements Runnable, KeyListener {
 			
 			movePlayer();
 			updateCameraPosition();
+			checkCameraBounds();
 			
-			if (mainCam.screenWidth != this.getWidth() || mainCam.screenHeight != this.getHeight()) {
-				mainCam.updateScreenSize(this.getWidth(), this.getHeight());
-			}
 			
 			repaint();
 			
@@ -120,6 +119,13 @@ public class Game extends Applet implements Runnable, KeyListener {
 		
 		if (player.y <= 640) {
 			mainCam.setPositionY(player.y);
+		}
+	}
+	
+	public void checkCameraBounds() {
+		// Ensures the camera will remain at the center of the screen even when the window changes size
+		if (mainCam.screenWidth != this.getWidth() || mainCam.screenHeight != this.getHeight()) {
+			mainCam.updateScreenSize(this.getWidth(), this.getHeight());
 		}
 	}
 	

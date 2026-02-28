@@ -9,6 +9,7 @@ public class Tile {
 	private int x;
 	private int y;
 	Image bgImage = new ImageIcon("t1.png").getImage();
+	private Tile north;
 	
 	public Tile(int x, int y) {
 		this.x = x;
@@ -16,11 +17,27 @@ public class Tile {
 	}
 	
 	public void draw(Graphics g) {
+		int size = 64 * 15;
+		
+		
 		int screenX = Camera.getInstance().projectX(x);
 		int screenY = Camera.getInstance().projectY(y);
 		
-		g.drawImage(bgImage, screenX - (1280/2), screenY - (720/2), null);
+		
+		
+//		g.drawImage(bgImage, screenX - (Camera.getInstance().screenWidth/2), screenY - (Camera.getInstance().screenHeight/2), null);
+		g.drawImage(bgImage, screenX - size/2, screenY - size/2, size, size, null);
+		
+		g.setColor(Color.red);
+		Rect topColl = new Rect(screenX - size/2, screenY - size/2, size, 300);
+		
+		
+		
+		topColl.draw(g);
+		
 	}
+	
+	
 	
 
 }

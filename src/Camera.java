@@ -1,3 +1,7 @@
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class Camera {
 	public int x;
@@ -5,6 +9,7 @@ public class Camera {
 	public static Camera instance;
 	public int screenWidth = 1280;
 	public int screenHeight = 720;
+	Rect camBounds = new Rect(0,0, screenWidth, screenHeight);
 	
 	public Camera() {
 		x = screenWidth/2;
@@ -33,9 +38,6 @@ public class Camera {
 	
 	/* Used to convert object x/y values to be correct value based on camera position and screen dimension
 	 * Made these functions so you don't have to worry about correct value when drawing
-	 * 
-	 * ONE ISSUE: this doesnt account for screen size switch, so either keep fixed size, or in game loop set screenWidth/HEIGHT 
-	 * to current applet size w/e size doesn't match 
 	 * */
 	public int projectX(int x) {
 		return x - this.x + screenWidth/2; 
@@ -48,6 +50,18 @@ public class Camera {
 	public void updateScreenSize(int w, int h) {
 		this.screenWidth = w;
 		this.screenHeight = h;
+	}
+	
+	public void drawCameraBounds(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(Color.magenta);
+		
+		float boundsThickness = 5.0f;
+		g2.setStroke(new BasicStroke(boundsThickness));
+		
+		
+		camBounds.draw(g2);
+		
 	}
 
 }
