@@ -50,6 +50,8 @@ public class Camera {
 	public void updateScreenSize(int w, int h) {
 		this.screenWidth = w;
 		this.screenHeight = h;
+		camBounds.w = w;
+		camBounds.h = h;
 	}
 	
 	public void drawCameraBounds(Graphics g) {
