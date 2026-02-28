@@ -23,14 +23,9 @@ public class Tile {
 		this.x = x;
 		this.y = y;
 		
-		collisionSections[0] = new ChunkSection("topCenter", this);
-		collisionSections[1] = new ChunkSection("topLeft", this);
-		collisionSections[2] = new ChunkSection("leftCenter", this);
-		collisionSections[3] = new ChunkSection("bottomLeft", this);
-		collisionSections[4] = new ChunkSection("bottomCenter", this);
-		collisionSections[5] = new ChunkSection("bottomRight", this);
-		collisionSections[6] = new ChunkSection("rightCenter", this);
-		collisionSections[7] = new ChunkSection("topRight", this);
+		initDirectionNames();
+		
+		
 		
 		dir[0] = new Vector(this.x, this.y - size);
 		
@@ -45,7 +40,7 @@ public class Tile {
 		int screenY = Camera.getInstance().projectY(y);
 		
 		
-		
+		// draws all the boxs on each cardinal and inter-cardinal directions
 		g.drawImage(bgImage, screenX - size/2, screenY - size/2, size, size, null);
 		displaySectionBox(collisionSections[0], 0, 0, 0, 100, g); // topCenter box
 		displaySectionBox(collisionSections[1], 0, 0, -960 + 200, 100, g); // topLeft box
@@ -80,6 +75,7 @@ public class Tile {
 		section.draw(g);
 	}
 	
+	// used to convert tile's position to a vector
 	public Vector getChunkVector() {
 		Vector v = new Vector(x, y);
 		
@@ -102,6 +98,17 @@ public class Tile {
 		for (ChunkSection c : collisionSections) {
 			c.withinCameraRange();
 		}
+	}
+	
+	public void initDirectionNames() {
+		collisionSections[0] = new ChunkSection("topCenter", this);
+		collisionSections[1] = new ChunkSection("topLeft", this);
+		collisionSections[2] = new ChunkSection("leftCenter", this);
+		collisionSections[3] = new ChunkSection("bottomLeft", this);
+		collisionSections[4] = new ChunkSection("bottomCenter", this);
+		collisionSections[5] = new ChunkSection("bottomRight", this);
+		collisionSections[6] = new ChunkSection("rightCenter", this);
+		collisionSections[7] = new ChunkSection("topRight", this);
 	}
 	
 	

@@ -1,4 +1,4 @@
-
+// A vector class to make it easier to manage positions instead of using arrays
 public class Vector {
 	int x;
 	int y;
