@@ -17,22 +17,27 @@ public class Game extends Applet implements Runnable, KeyListener {
 	
 	Thread thread;
 	Camera mainCam;
-	Tile[] tiles;
+	Tile[] tiles = new Tile[3];
 	Image doubleBuffer;
-
 	
+
 	
 	Player player = new Player(0,0,50,50);
+	ChunkManager worldManager;
+	
+	
 
 	public void init() {
+		tiles[0] = new Tile(0,0);
+		
 		this.setSize(1280, 720);
 		
 		mainCam = new Camera();
 		mainCam.setPosition(player.x, player.y);
 	
 		
-		tiles = new Tile[3];
-		tiles[0] = new Tile(0,0);
+		
+		
 		
 		
 		
@@ -48,8 +53,8 @@ public class Game extends Applet implements Runnable, KeyListener {
 	
 	public void paint(Graphics g) {
 		g.clearRect(0, 0, getWidth(), getHeight());
-		
 		tiles[0].draw(g);
+		
 		
 
 		
@@ -113,13 +118,14 @@ public class Game extends Applet implements Runnable, KeyListener {
 	 * Gives the idea there's a wall, but still need to add collision zones
 	 * */
 	public void updateCameraPosition() {
-		if (player.x >= 0) {
-			mainCam.setPositionX(player.x);
-		}
-		
-		if (player.y <= 640) {
-			mainCam.setPositionY(player.y);
-		}
+//		if (player.x >= 0) {
+//			mainCam.setPositionX(player.x);
+//		}
+//		
+//		if (player.y <= 640) {
+//			mainCam.setPositionY(player.y);
+//		}
+		mainCam.setPosition(player.x, player.y);
 	}
 	
 	public void checkCameraBounds() {

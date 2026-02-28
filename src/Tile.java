@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 
@@ -9,7 +10,8 @@ public class Tile {
 	private int x;
 	private int y;
 	Image bgImage = new ImageIcon("t1.png").getImage();
-	public int[] topCenter, topLeft, leftCenter, bottomLeft, bottomCenter, bottomRight, rightCenter, topRight;
+	public Vector[] dir = new Vector[1];
+	private HashMap<String, Vector> dirVector = new HashMap<String, Vector>();
 	
 	public ChunkSection[] collisionSections;
 	int size = 64 * 15;
@@ -21,21 +23,21 @@ public class Tile {
 		this.x = x;
 		this.y = y;
 		
-		collisionSections[0] = new ChunkSection(x, y, x, y, null);
-		collisionSections[1] = new ChunkSection(x, y, x, y, null);
-		collisionSections[2] = new ChunkSection(x, y, x, y, null);
-		collisionSections[3] = new ChunkSection(x, y, x, y, null);
-		collisionSections[4] = new ChunkSection(x, y, x, y, null);
-		collisionSections[5] = new ChunkSection(x, y, x, y, null);
-		collisionSections[6] = new ChunkSection(x, y, x, y, null);
-		collisionSections[7] = new ChunkSection(x, y, x, y, null);
-	
+		collisionSections[0] = new ChunkSection("topCenter", this);
+		collisionSections[1] = new ChunkSection("topLeft", this);
+		collisionSections[2] = new ChunkSection("leftCenter", this);
+		collisionSections[3] = new ChunkSection("bottomLeft", this);
+		collisionSections[4] = new ChunkSection("bottomCenter", this);
+		collisionSections[5] = new ChunkSection("bottomRight", this);
+		collisionSections[6] = new ChunkSection("rightCenter", this);
+		collisionSections[7] = new ChunkSection("topRight", this);
 		
+		dir[0] = new Vector(this.x, this.y - size);
 		
-		
-		
-		
-		
+		for (int i = 0; i < dir.length; i++) {
+			dirVector.put(collisionSections[i].dirName, dir[i]);
+		}
+			
 	}
 	
 	public void draw(Graphics g) {	
@@ -76,6 +78,30 @@ public class Tile {
 		
 		g.setColor(Color.red);
 		section.draw(g);
+	}
+	
+	public Vector getChunkVector() {
+		Vector v = new Vector(x, y);
+		
+		return v;
+	}
+	
+	public void spawnChunk(String dir) {
+		System.out.println("Spawn a chunk here: " + dir);
+		
+		try {
+			if (!ChunkManager.getInstance().doesChunkExist(getChunkVector())) {
+				ChunkManager.getInstance().addNewChunk(dirVector.get(dir), new Tile(dirVector.get(dir).x, dirVector.get(dir).y));
+			}
+		} catch (NullPointerException e) {
+			System.out.println("Direction not yet set.");
+		}
+	}
+	
+	public void checkSections() {
+		for (ChunkSection c : collisionSections) {
+			c.withinCameraRange();
+		}
 	}
 	
 	
