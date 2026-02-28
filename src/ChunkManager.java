@@ -32,6 +32,9 @@ public class ChunkManager {
 		return chunkList.containsKey(locationKey);
 	}
 	
+	/* Process any new chunks that the camera can see. 
+	 * Since the camera is always moving, you don't want to loop through map while drawing, this avoids the ConcurrentModificationException error
+	 * */
 	public void processChunkQueue() {
 		
 		for (ChunkRequest pendingChunk : chunkQueue) {
@@ -48,9 +51,12 @@ public class ChunkManager {
 	public void draw(Graphics g) {
 		
 		for (Tile tile : new HashMap<>(chunkList).values()) { 
+			tile.draw(g);
 			tile.checkSections(); 
-			tile.draw(g); 
+			
+			
 		}
+		printMap();
 		
 		processChunkQueue();
 	}
@@ -61,6 +67,13 @@ public class ChunkManager {
 		public ChunkRequest(Vector location) {
 			this.chunkLocation = location;
 		}
+	}
+	
+	public void printMap() {
+		for (Map.Entry<Vector, Tile> entry : chunkList.entrySet()) {
+            System.out.println("Key: " + "(" + entry.getKey().x + "," + entry.getKey().y + ")" + ", Value: " + entry.getValue());
+        }
+		System.out.println("-------");
 	}
 
 }

@@ -25,14 +25,18 @@ public class Camera {
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
+		camBounds.x = this.x - screenWidth / 2;;
+		camBounds.y = this.y - screenHeight / 2;
 	}
 	
 	public void setPositionX(int x) {
 		this.x = x;
+		camBounds.x = this.x - screenWidth / 2;;
 	}
 	
 	public void setPositionY(int y) {
 		this.y = y;
+		camBounds.y = this.y - screenHeight / 2;
 	}
 	
 	
@@ -61,8 +65,10 @@ public class Camera {
 		float boundsThickness = 5.0f;
 		g2.setStroke(new BasicStroke(boundsThickness));
 		
+		g.drawRect(0,0, screenWidth, screenHeight);
+	
 		
-		camBounds.draw(g2);
+		
 		
 	}
 

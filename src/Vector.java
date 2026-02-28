@@ -8,8 +8,20 @@ public class Vector {
 		this.y = y;
 	}
 	
-	public boolean isEqual(Vector v) {
-		return this.x == v.x && this.y == v.y;
+	@Override
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (!(o instanceof Vector)) return false;
+	    Vector v = (Vector) o;
+	    return x == v.x && y == v.y;
 	}
+
+	@Override
+	public int hashCode() {
+	    int result = Integer.hashCode(x);
+	    result = 31 * result + Integer.hashCode(y);
+	    return result;
+	}
+
 
 }

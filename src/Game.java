@@ -17,7 +17,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 	
 	Thread thread;
 	Camera mainCam;
-	Tile[] tiles = new Tile[3];
+	Tile[] tiles = new Tile[1];
 	Image doubleBuffer;
 	
 
@@ -28,19 +28,13 @@ public class Game extends Applet implements Runnable, KeyListener {
 	
 
 	public void init() {
+		mainCam = new Camera();
+		mainCam.setPosition(player.x, player.y);
+		
 		tiles[0] = new Tile(0,0);
 		worldManager = new ChunkManager(tiles[0]);
 		
 		this.setSize(1280, 720);
-		
-		mainCam = new Camera();
-		mainCam.setPosition(player.x, player.y);
-	
-		
-		
-		
-		
-		
 		
 		
 		thread = new Thread(this);
@@ -49,6 +43,8 @@ public class Game extends Applet implements Runnable, KeyListener {
 		addKeyListener(this);
 		requestFocus();
 
+		
+		
 	}
 	
 	
@@ -99,8 +95,9 @@ public class Game extends Applet implements Runnable, KeyListener {
 		if (key == KeyEvent.VK_A) {player.LEFT = true;}
 		if (key == KeyEvent.VK_W) {player.UP = true;}
 		if (key == KeyEvent.VK_S) {player.DOWN = true;}
-		System.out.printf("Camera Position: x=%d, y=%d\n", mainCam.x, mainCam.y);
-		System.out.printf("Player Position: x=%d, y=%d\n", player.x, player.y);
+//		System.out.printf("Camera Position: x=%d, y=%d\n", mainCam.x, mainCam.y);
+//		System.out.printf("Player Position: x=%d, y=%d\n", player.x, player.y);
+	
 	}
 
 	@Override
@@ -114,19 +111,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 		
 	}
 
-	
-	
-	/* Limits camera movement if player's x/y are within certain bounds
-	 * Gives the idea there's a wall, but still need to add collision zones
-	 * */
 	public void updateCameraPosition() {
-//		if (player.x >= 0) {
-//			mainCam.setPositionX(player.x);
-//		}
-//		
-//		if (player.y <= 640) {
-//			mainCam.setPositionY(player.y);
-//		}
 		mainCam.setPosition(player.x, player.y);
 	}
 	
