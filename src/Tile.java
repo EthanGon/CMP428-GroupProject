@@ -53,13 +53,7 @@ public class Tile {
 		
 	}
 	
-	public int[] getPosition() {
-		int[] pos = new int[2];
-		pos[0] = x;
-		pos[1] = y;
-		
-		return pos;
-	}
+	
 	
 	public void displaySectionBox(ChunkSection section, int xOffset, int yOffset, int wOffset, int hOffset, Graphics g) {
 		int screenX = Camera.getInstance().projectX(x);
@@ -75,6 +69,14 @@ public class Tile {
 		section.draw(g);
 	}
 	
+	public int[] getPosition() {
+		int[] pos = new int[2];
+		pos[0] = x;
+		pos[1] = y;
+		
+		return pos;
+	}
+	
 	// used to convert tile's position to a vector
 	public Vector getChunkVector() {
 		Vector v = new Vector(x, y);
@@ -84,13 +86,12 @@ public class Tile {
 	
 	public void spawnChunk(String dir) {
 		System.out.println("Spawn a chunk here: " + dir);
+		Vector targetLocation = dirVector.get(dir);
 		
-		try {
-			if (!ChunkManager.getInstance().doesChunkExist(getChunkVector())) {
-				ChunkManager.getInstance().addNewChunk(dirVector.get(dir), new Tile(dirVector.get(dir).x, dirVector.get(dir).y));
-			}
-		} catch (NullPointerException e) {
-			System.out.println("Direction not yet set.");
+		if (targetLocation == null) return;
+		
+		if (!ChunkManager.getInstance().doesChunkExist(targetLocation)) {
+			ChunkManager.getInstance().addChunkToQueue(targetLocation);
 		}
 	}
 	

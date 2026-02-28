@@ -29,6 +29,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 
 	public void init() {
 		tiles[0] = new Tile(0,0);
+		worldManager = new ChunkManager(tiles[0]);
 		
 		this.setSize(1280, 720);
 		
@@ -54,6 +55,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 	public void paint(Graphics g) {
 		g.clearRect(0, 0, getWidth(), getHeight());
 		tiles[0].draw(g);
+		worldManager.draw(g);
 		
 		
 
