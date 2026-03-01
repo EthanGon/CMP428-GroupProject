@@ -42,7 +42,7 @@ public class Tile {
 		
 		// draws all the boxes on each cardinal and inter-cardinal directions (I know these are hard coded sorry about that should be fine as long chunk image is always 960x960)
 		g.drawImage(bgImage, screenX - size/2, screenY - size/2, size, size, null);
-		//displaySectionBoxes(g);
+		displaySectionBoxes(g);
 	    	
 	}
 	
@@ -60,7 +60,7 @@ public class Tile {
 		
 	    tileBounds.x = screenX - size/2;
 	    tileBounds.y = screenY - size/2;
-	    tileBounds.draw(g);
+	    //tileBounds.draw(g);
 	}
 	
 	// Use to show the outline of the section boxes
@@ -77,6 +77,7 @@ public class Tile {
 	}
 	
 	
+	// One issue: the drawing and correcting position are not independent, so at some point I should separate the logic
 	public void displaySectionBox(ChunkSection section, int xOffset, int yOffset, int wOffset, int hOffset, Graphics g) {
 		section.x = x - size/2 + xOffset;
 		section.y = y - size/2 + yOffset;		
@@ -86,8 +87,9 @@ public class Tile {
 		int screenX = Camera.getInstance().projectX(section.x);
 		int screenY = Camera.getInstance().projectY(section.y);
 		
-		g.setColor(Color.red);
-		g.drawRect(screenX, screenY, section.w, section.h);
+		// Used to display outline of boxes
+		//g.setColor(Color.red);
+		//g.drawRect(screenX, screenY, section.w, section.h);
 	}
 	
 	public int[] getPosition() {
@@ -153,11 +155,6 @@ public class Tile {
 		Player playerObect = Player.getPlayer();
 		
 		float distance = (float) Math.sqrt((playerObect.x - x) * (playerObect.x - x) + (playerObect.y - y) * (playerObect.y - y));
-		
-		
-		if (this.getChunkVector().x == 0 && this.getChunkVector().y == 0) {
-			System.out.println("Distance from player is: " + distance);
-		}
 		
 		return distance < 10000f;
 	}

@@ -18,9 +18,15 @@ public class ChunkSection extends Rect {
 	
 	// checks if a chunk's direction box is in range of camera
 	public void withinCameraRange() {
-		if (!spawned && this.overlaps(Camera.getInstance().camBounds)) {
-			parentChunk.spawnChunk(dirName);
-			spawned = true;
+		
+		
+		try {
+			if (!spawned && this.overlaps(Camera.getInstance().camBounds)) {
+				parentChunk.spawnChunk(dirName);
+				spawned = true;
+			}
+		} catch (Exception e) {
+			e.getMessage();
 		}
 	}
 	

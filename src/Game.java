@@ -88,6 +88,10 @@ public class Game extends Applet implements Runnable, KeyListener {
 		if (key == KeyEvent.VK_A) {player.LEFT = true;}
 		if (key == KeyEvent.VK_W) {player.UP = true;}
 		if (key == KeyEvent.VK_S) {player.DOWN = true;}
+		
+		if (key == KeyEvent.VK_0) {
+			ChunkManager.getInstance().printMap();
+		}
 	
 	}
 

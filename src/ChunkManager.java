@@ -8,6 +8,7 @@ public class ChunkManager {
 	private static ChunkManager instance;
 	private HashMap<Vector, Tile> chunkList = new HashMap<Vector, Tile>();
 	private Tile startingChunk;
+	private int chunks;
 	
 	private ArrayList<ChunkRequest> chunkQueue = new ArrayList<>();
 	
@@ -16,6 +17,7 @@ public class ChunkManager {
 		
 		instance = this;
 		chunkList.put(startTile.getChunkVector(), startTile);
+		chunks++;
 	}
 	
 	public static ChunkManager getInstance() {
@@ -23,7 +25,9 @@ public class ChunkManager {
 	}
 	
 	public void addNewChunk(Vector location, Tile chunk) {
-		chunkList.put(location, chunk);
+		if (!doesChunkExist(location)) {
+			chunkList.put(location, chunk);
+		}
 	}
 	
 	public void addChunkToQueue(Vector location) {
@@ -58,11 +62,7 @@ public class ChunkManager {
 				tile.checkSections();
 			}
 			
-			
-			
-			
 		}
-		printMap();
 		
 		processChunkQueue();
 	}
@@ -76,9 +76,10 @@ public class ChunkManager {
 	}
 	
 	public void printMap() {
-		for (Map.Entry<Vector, Tile> entry : chunkList.entrySet()) {
-            System.out.println("Key: " + "(" + entry.getKey().x + "," + entry.getKey().y + ")" + ", Value: " + entry.getValue());
-        }
+//		for (Map.Entry<Vector, Tile> entry : chunkList.entrySet()) {
+//            System.out.println("Key: " + "(" + entry.getKey().x + "," + entry.getKey().y + ")" + ", Value: " + entry.getValue());
+//        }
+		System.out.println("MAP SIZE: " + chunks);
 		System.out.println("-------");
 	}
 
