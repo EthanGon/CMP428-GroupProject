@@ -6,11 +6,12 @@ import javax.swing.ImageIcon;
 
 public class ChunkManager {
 	private static ChunkManager instance;
-	private HashMap<Vector, Tile> chunkList = new HashMap<Vector, Tile>();
-	private int chunks;
-	private Image[] grassTextures = new Image[7];
-	
 	private ArrayList<ChunkRequest> chunkQueue = new ArrayList<>();
+	private HashMap<Vector, Tile> chunkList = new HashMap<Vector, Tile>();
+	private Image[] grassTextures = new Image[7];
+	private int chunks;
+	
+
 	
 	public ChunkManager() {
 		initGrassTexture();
@@ -25,6 +26,10 @@ public class ChunkManager {
 		return instance;
 	}
 	
+	
+	/* Adds a new chunk to the chunk list using it's location as the key. 
+	 * The key/location will be used to check if a chunk exist at that location already. 
+	 */
 	public void addNewChunk(Vector location, Tile chunk) {
 		if (!doesChunkExist(location)) {
 			chunkList.put(location, chunk);
@@ -76,9 +81,8 @@ public class ChunkManager {
 		}
 	}
 	
+	// Loads all the images from the textures/grass folder, this assumes grass files will be named "grass#.png"
 	public void initGrassTexture() {
-//		private Image[] grassTexutres = new ImageIcon("textures/grass/grass0.png").getImage();
-
 		for (int i = 0; i < grassTextures.length; i++) {
 			grassTextures[i] = new ImageIcon("textures/grass/grass" + i + ".png").getImage();
 		}

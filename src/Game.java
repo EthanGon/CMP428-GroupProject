@@ -40,12 +40,17 @@ public class Game extends Applet implements Runnable, KeyListener {
 	}
 	
 	
+	// Ideally world should be drawn before anything object, and UI stuff should be drawn after those objects
 	public void paint(Graphics g) {
 		g.clearRect(0, 0, getWidth(), getHeight());
 		worldManager.draw(g);
 		
+		// DRAW OBJECTS BELOW HERE (ensures world is drawn before objects)
 		g.setColor(Color.red);
 		player.draw(g);
+		// DRAW OBJECTS ABOVE HERE 
+		
+		
 		
 		mainCam.drawCameraBounds(g);
 		drawControls(g);
@@ -59,7 +64,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 			movePlayer();
 			updateCameraPosition();
 			checkCameraBounds();
-			
 			
 			repaint();
 			
@@ -85,9 +89,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 		if (key == KeyEvent.VK_W) {player.UP = true;}
 		if (key == KeyEvent.VK_S) {player.DOWN = true;}
 		
-		if (key == KeyEvent.VK_0) {
-			ChunkManager.getInstance().printMap();
-		}
 	
 	}
 
