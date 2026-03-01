@@ -40,7 +40,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 		requestFocus();
 
 		
-		
 	}
 	
 	

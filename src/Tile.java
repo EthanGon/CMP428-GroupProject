@@ -8,10 +8,11 @@ import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 
+
 public class Tile {
 	private int x;
 	private int y;
-	private Image bgImage = new ImageIcon("t1.png").getImage();
+	private Image chunkTexture;
 	private Rect tileBounds;
 	public Vector[] dir = new Vector[8];
 	private HashMap<String, Vector> dirVector = new HashMap<String, Vector>();
@@ -20,8 +21,9 @@ public class Tile {
 	int size = 64 * 15;
 	
 	
-	public Tile(int x, int y) {
-
+	public Tile(int x, int y, Image img) {
+		setTexture(img);
+		
 		this.x = x;
 		this.y = y;
 		
@@ -41,7 +43,7 @@ public class Tile {
 		int screenY = Camera.getInstance().projectY(y);
 		
 		// draws all the boxes on each cardinal and inter-cardinal directions (I know these are hard coded sorry about that should be fine as long chunk image is always 960x960)
-		g.drawImage(bgImage, screenX - size/2, screenY - size/2, size, size, null);
+		g.drawImage(chunkTexture, screenX - size/2, screenY - size/2, size, size, null);
 		displaySectionBoxes(g);
 	    	
 	}
@@ -145,6 +147,12 @@ public class Tile {
 		dirVector.put("rightCenter", 	new Vector(x + size, y)); 
 		dirVector.put("topRight", 		new Vector(x + size, y - size));
 	}
+	
+	public void setTexture(Image img) {
+		this.chunkTexture = img;
+	}
+	
+
 	
 	
 	/* Calculate the distance between this tile and the player to determine if

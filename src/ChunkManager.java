@@ -1,19 +1,24 @@
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.ImageIcon;
 
 public class ChunkManager {
 	private static ChunkManager instance;
 	private HashMap<Vector, Tile> chunkList = new HashMap<Vector, Tile>();
 	private Tile startingChunk;
 	private int chunks;
+	private Image[] grassTextures = new Image[7];
 	
 	private ArrayList<ChunkRequest> chunkQueue = new ArrayList<>();
 	
 	public ChunkManager() {
-		Tile startTile = new Tile(0,0);
+		initGrassTexture();
+		Tile startTile = new Tile(0,0, assignRandomTexture());
 		
 		instance = this;
 		chunkList.put(startTile.getChunkVector(), startTile);
@@ -46,7 +51,7 @@ public class ChunkManager {
 		for (ChunkRequest pendingChunk : chunkQueue) {
 			
 			if (!doesChunkExist(pendingChunk.chunkLocation)) {
-				addNewChunk(pendingChunk.chunkLocation, new Tile(pendingChunk.chunkLocation.x, pendingChunk.chunkLocation.y));
+				addNewChunk(pendingChunk.chunkLocation, new Tile(pendingChunk.chunkLocation.x, pendingChunk.chunkLocation.y, assignRandomTexture()));
 			}
 			
 			
@@ -73,6 +78,20 @@ public class ChunkManager {
 		public ChunkRequest(Vector location) {
 			this.chunkLocation = location;
 		}
+	}
+	
+	public void initGrassTexture() {
+//		private Image[] grassTexutres = new ImageIcon("textures/grass/grass0.png").getImage();
+
+		for (int i = 0; i < grassTextures.length; i++) {
+			grassTextures[i] = new ImageIcon("textures/grass/grass" + i + ".png").getImage();
+		}
+	}
+	
+	public Image assignRandomTexture() {
+		int randomIndex = (int) (Math.random() * grassTextures.length);
+		
+		return grassTextures[randomIndex];
 	}
 	
 	public void printMap() {
