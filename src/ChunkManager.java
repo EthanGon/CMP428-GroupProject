@@ -21,6 +21,9 @@ public class ChunkManager {
 	}
 	
 	public void addNewChunk(Vector location, Tile chunk) {
+		
+		
+		
 		chunkList.put(location, chunk);
 	}
 	
@@ -50,9 +53,13 @@ public class ChunkManager {
 	
 	public void draw(Graphics g) {
 		
-		for (Tile tile : new HashMap<>(chunkList).values()) { 
-			tile.draw(g);
-			tile.checkSections(); 
+		for (Tile tile : chunkList.values()) { 
+			if (tile.withinPlayerDistance()) {
+				tile.draw(g);
+				tile.checkSections();
+			}
+			
+			
 			
 			
 		}

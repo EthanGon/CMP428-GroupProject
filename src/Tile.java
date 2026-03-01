@@ -25,7 +25,7 @@ public class Tile {
 		this.x = x;
 		this.y = y;
 		
-		tileBounds = new Rect(this.x, this.y, size, size);
+		tileBounds = new Rect(this.x - size/2, this.y - size/2, size, size);
 		collisionSections = new ChunkSection[8];
 		
 		
@@ -42,7 +42,7 @@ public class Tile {
 		int screenY = Camera.getInstance().projectY(y);
 		
 		
-		// draws all the boxes on each cardinal and inter-cardinal directions
+		// draws all the boxes on each cardinal and inter-cardinal directions (I know these are hard coded sorry about that should be fine as long chunk image is always 960x960)
 		g.drawImage(bgImage, screenX - size/2, screenY - size/2, size, size, null);
 		displaySectionBox(collisionSections[0], 0, 0, 0, 100, g); // topCenter box
 		displaySectionBox(collisionSections[1], 0, 0, -960 + 200, 100, g); // topLeft box
@@ -148,9 +148,29 @@ public class Tile {
 		dirVector.put("topRight", 		new Vector(x + size, y - size));
 	}
 	
-	public boolean touchingCamera() {
-		return this.tileBounds.overlaps(Camera.getInstance().camBounds);
+	
+	/* Calculate the distance between this tile and the player to determine if
+	 * the player is close enough that this tile should be drawn
+	 * You don't want to bother checking sections and drawing tiles if they player isn't even near it
+	 * */
+	public boolean withinPlayerDistance() {
+		
+		
+		Player playerObect = Player.getPlayer();
+		
+		float distance = (float) Math.sqrt((playerObect.x - x) * (playerObect.x - x) + (playerObect.y - y) * (playerObect.y - y));
+		
+		
+		if (this.getChunkVector().x == 0 && this.getChunkVector().y == 0) {
+			System.out.println("Distance from player is: " + distance);
+		}
+		
+		return distance < 10000f;
 	}
+	
+//	public boolean touchingCamera() {
+//		return this.tileBounds.overlaps(Camera.getInstance().camBounds);
+//	}
 	
 	
 	
