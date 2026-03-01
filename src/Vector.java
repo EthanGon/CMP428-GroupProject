@@ -11,8 +11,11 @@ public class Vector {
 	@Override
 	public boolean equals(Object o) {
 	    if (this == o) return true;
+	    
 	    if (!(o instanceof Vector)) return false;
 	    Vector v = (Vector) o;
+	    
+	    
 	    return x == v.x && y == v.y;
 	}
 

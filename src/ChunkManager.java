@@ -11,9 +11,11 @@ public class ChunkManager {
 	
 	private ArrayList<ChunkRequest> chunkQueue = new ArrayList<>();
 	
-	public ChunkManager(Tile startingChunk) {
+	public ChunkManager() {
+		Tile startTile = new Tile(0,0);
+		
 		instance = this;
-		chunkList.put(startingChunk.getChunkVector(), startingChunk);
+		chunkList.put(startTile.getChunkVector(), startTile);
 	}
 	
 	public static ChunkManager getInstance() {
@@ -21,9 +23,6 @@ public class ChunkManager {
 	}
 	
 	public void addNewChunk(Vector location, Tile chunk) {
-		
-		
-		
 		chunkList.put(location, chunk);
 	}
 	

@@ -20,8 +20,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 	Tile[] tiles = new Tile[1];
 	Image doubleBuffer;
 	
-
-	
 	Player player = new Player(0,0,50,50);
 	ChunkManager worldManager;
 	
@@ -30,9 +28,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 	public void init() {
 		mainCam = new Camera();
 		mainCam.setPosition(player.x, player.y);
-		
-		tiles[0] = new Tile(0,0);
-		worldManager = new ChunkManager(tiles[0]);
+		worldManager = new ChunkManager();
 		
 		this.setSize(1280, 720);
 		
@@ -50,16 +46,13 @@ public class Game extends Applet implements Runnable, KeyListener {
 	
 	public void paint(Graphics g) {
 		g.clearRect(0, 0, getWidth(), getHeight());
-		tiles[0].draw(g);
 		worldManager.draw(g);
-		
-		
-
 		
 		g.setColor(Color.red);
 		player.draw(g);
 		
 		mainCam.drawCameraBounds(g);
+		drawControls(g);
 	}
 
 	
@@ -95,8 +88,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 		if (key == KeyEvent.VK_A) {player.LEFT = true;}
 		if (key == KeyEvent.VK_W) {player.UP = true;}
 		if (key == KeyEvent.VK_S) {player.DOWN = true;}
-//		System.out.printf("Camera Position: x=%d, y=%d\n", mainCam.x, mainCam.y);
-//		System.out.printf("Player Position: x=%d, y=%d\n", player.x, player.y);
 	
 	}
 
@@ -147,6 +138,13 @@ public class Game extends Applet implements Runnable, KeyListener {
 			paint(g);
 		}
 			
+	}
+	
+	public void drawControls(Graphics g) {
+		Font newFont = g.getFont().deriveFont(25f);
+		g.setFont(newFont);
+		
+		g.drawString("Move: WASD", 10, 40);
 	}
 	
 	@Override

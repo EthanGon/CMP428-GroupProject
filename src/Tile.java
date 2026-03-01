@@ -29,7 +29,6 @@ public class Tile {
 		collisionSections = new ChunkSection[8];
 		
 		
-		
 		initDirectionNames();
 		initDirections();
 		
@@ -41,21 +40,10 @@ public class Tile {
 		int screenX = Camera.getInstance().projectX(x);
 		int screenY = Camera.getInstance().projectY(y);
 		
-		
 		// draws all the boxes on each cardinal and inter-cardinal directions (I know these are hard coded sorry about that should be fine as long chunk image is always 960x960)
 		g.drawImage(bgImage, screenX - size/2, screenY - size/2, size, size, null);
-		displaySectionBox(collisionSections[0], 0, 0, 0, 100, g); // topCenter box
-		displaySectionBox(collisionSections[1], 0, 0, -960 + 200, 100, g); // topLeft box
-		displaySectionBox(collisionSections[2], 0, 0, -960 + 200, 860, g); // leftCenter box
-		displaySectionBox(collisionSections[3], 0, size - (collisionSections[1].h), -960 + 200, 100, g); // bottomLeft box
-		displaySectionBox(collisionSections[4], 0, size - (collisionSections[0].h), 0, 100, g); // bottomCenter box
-		displaySectionBox(collisionSections[5], size - (collisionSections[2].w), size - (collisionSections[1].h), -960 + 200, 100, g); // bottomRight box
-	    displaySectionBox(collisionSections[6], size - (collisionSections[2].w), 0, -960 + 200, 860, g); // right center box
-	    displaySectionBox(collisionSections[7], size - (collisionSections[2].w), 0, -960 + 200, 100, g); // topRight box
-	    drawTileBounds(g);
-	    
-	    
-		
+		//displaySectionBoxes(g);
+	    	
 	}
 	
 	
@@ -75,11 +63,21 @@ public class Tile {
 	    tileBounds.draw(g);
 	}
 	
+	// Use to show the outline of the section boxes
+	public void displaySectionBoxes(Graphics g) {
+		displaySectionBox(collisionSections[0], 0, 0, 0, 100, g); // topCenter box
+		displaySectionBox(collisionSections[1], 0, 0, -960 + 200, 100, g); // topLeft box
+		displaySectionBox(collisionSections[2], 0, 0, -960 + 200, 860, g); // leftCenter box
+		displaySectionBox(collisionSections[3], 0, size - (collisionSections[1].h), -960 + 200, 100, g); // bottomLeft box
+		displaySectionBox(collisionSections[4], 0, size - (collisionSections[0].h), 0, 100, g); // bottomCenter box
+		displaySectionBox(collisionSections[5], size - (collisionSections[2].w), size - (collisionSections[1].h), -960 + 200, 100, g); // bottomRight box
+	    displaySectionBox(collisionSections[6], size - (collisionSections[2].w), 0, -960 + 200, 860, g); // right center box
+	    displaySectionBox(collisionSections[7], size - (collisionSections[2].w), 0, -960 + 200, 100, g); // topRight box
+	    drawTileBounds(g);
+	}
 	
 	
 	public void displaySectionBox(ChunkSection section, int xOffset, int yOffset, int wOffset, int hOffset, Graphics g) {
-		
-		
 		section.x = x - size/2 + xOffset;
 		section.y = y - size/2 + yOffset;		
 		section.w = size + wOffset;
@@ -87,8 +85,6 @@ public class Tile {
 		
 		int screenX = Camera.getInstance().projectX(section.x);
 		int screenY = Camera.getInstance().projectY(section.y);
-		
-		
 		
 		g.setColor(Color.red);
 		g.drawRect(screenX, screenY, section.w, section.h);
@@ -154,8 +150,6 @@ public class Tile {
 	 * You don't want to bother checking sections and drawing tiles if they player isn't even near it
 	 * */
 	public boolean withinPlayerDistance() {
-		
-		
 		Player playerObect = Player.getPlayer();
 		
 		float distance = (float) Math.sqrt((playerObect.x - x) * (playerObect.x - x) + (playerObect.y - y) * (playerObect.y - y));
@@ -167,13 +161,7 @@ public class Tile {
 		
 		return distance < 10000f;
 	}
-	
-//	public boolean touchingCamera() {
-//		return this.tileBounds.overlaps(Camera.getInstance().camBounds);
-//	}
-	
-	
-	
+
 	
 
 }
