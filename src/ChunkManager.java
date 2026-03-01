@@ -1,16 +1,12 @@
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-
 import javax.swing.ImageIcon;
 
 public class ChunkManager {
 	private static ChunkManager instance;
 	private HashMap<Vector, Tile> chunkList = new HashMap<Vector, Tile>();
-	private Tile startingChunk;
 	private int chunks;
 	private Image[] grassTextures = new Image[7];
 	

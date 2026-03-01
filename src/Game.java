@@ -15,16 +15,13 @@ import javax.swing.ImageIcon;
 
 public class Game extends Applet implements Runnable, KeyListener {
 	
-	Thread thread;
-	Camera mainCam;
-	Tile[] tiles = new Tile[1];
-	Image doubleBuffer;
-	
-	Player player = new Player(0,0,50,50);
-	ChunkManager worldManager;
+	private Thread thread;
+	private Camera mainCam;
+	private Image doubleBuffer;
+	private ChunkManager worldManager;
+	private Player player = new Player(0,0,50,50);
 	
 	
-
 	public void init() {
 		mainCam = new Camera();
 		mainCam.setPosition(player.x, player.y);
