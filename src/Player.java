@@ -7,6 +7,10 @@ public class Player extends Mob {
 	public boolean UP, DOWN, LEFT, RIGHT;
 	public int moveSpeed = 5;
 	public static Player playerInstance;
+	// XP Progress
+	public int level = 1;
+	public int xp = 0;
+	public int xpToNextLv = 10;
 	
 	public Player(int x, int y, int w, int h) {
 		this.playerInstance = this;
@@ -38,6 +42,29 @@ public class Player extends Mob {
 		g.fillRect(screenX - w, screenY - h, w, h);
 	}
 	
+	public float getXPPercent() {
+		return (float) xp / xpToNextLv;
+	}
 	
+	public void addXP(int amount) {
+		xp += amount;
+		
+		//handles if a lot of xp is gained from abundance of mobs (double/triple/etc) level-up
+		while(xp>=xpToNextLv) {
+			xp -= xpToNextLv;
+			levelUp();
+		}
+		
+	}
+	
+	private void levelUp() {
+		level++;
+		
+		// Exponential increase for XP per level
+		xpToNextLv = (int)(10 * Math.pow(1.25, level - 1));
+		
+		System.out.println("LEVEL UP! level: " + level);
+	
+}
 
 }
