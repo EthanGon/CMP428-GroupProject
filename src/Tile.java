@@ -11,11 +11,11 @@ public class Tile {
 	private int y;
 	private Image chunkTexture;
 	private Rect tileBounds;
-	public Vector[] dir = new Vector[8];
 	private HashMap<String, Vector> dirVector = new HashMap<String, Vector>();
+	private boolean drawBounds = false;
 	
 	public ChunkSection[] collisionSections;
-	int size = 64 * 15;
+	private final int SIZE = 64 * 15; 
 	
 	
 	public Tile(int x, int y, Image img) {
@@ -24,7 +24,7 @@ public class Tile {
 		this.x = x;
 		this.y = y;
 		
-		tileBounds = new Rect(this.x - size/2, this.y - size/2, size, size);
+		tileBounds = new Rect(this.x - SIZE/2, this.y - SIZE/2, SIZE, SIZE);
 		collisionSections = new ChunkSection[8];
 		
 		
@@ -40,7 +40,7 @@ public class Tile {
 		int screenY = Camera.getInstance().projectY(y);
 		
 		// draws all the boxes on each cardinal and inter-cardinal directions (I know these are hard coded sorry about that should be fine as long chunk image is always 960x960)
-		g.drawImage(chunkTexture, screenX - size/2, screenY - size/2, size, size, null);
+		g.drawImage(chunkTexture, screenX - SIZE/2, screenY - SIZE/2, SIZE, SIZE, null);
 		displaySectionBoxes(g);
 	    	
 	}
@@ -57,9 +57,10 @@ public class Tile {
 		float boundThickness = 5.0f;
 		g2.setStroke(new BasicStroke(boundThickness));
 		
-	    tileBounds.x = screenX - size/2;
-	    tileBounds.y = screenY - size/2;
-	    //tileBounds.draw(g);
+	    tileBounds.x = screenX - SIZE/2;
+	    tileBounds.y = screenY - SIZE/2;
+	    
+	    if (drawBounds) {tileBounds.draw(g);}
 	}
 	
 	// Use to show the outline of the section boxes
@@ -67,28 +68,30 @@ public class Tile {
 		displaySectionBox(collisionSections[0], 0, 0, 0, 100, g); // topCenter box
 		displaySectionBox(collisionSections[1], 0, 0, -960 + 200, 100, g); // topLeft box
 		displaySectionBox(collisionSections[2], 0, 0, -960 + 200, 860, g); // leftCenter box
-		displaySectionBox(collisionSections[3], 0, size - (collisionSections[1].h), -960 + 200, 100, g); // bottomLeft box
-		displaySectionBox(collisionSections[4], 0, size - (collisionSections[0].h), 0, 100, g); // bottomCenter box
-		displaySectionBox(collisionSections[5], size - (collisionSections[2].w), size - (collisionSections[1].h), -960 + 200, 100, g); // bottomRight box
-	    displaySectionBox(collisionSections[6], size - (collisionSections[2].w), 0, -960 + 200, 860, g); // right center box
-	    displaySectionBox(collisionSections[7], size - (collisionSections[2].w), 0, -960 + 200, 100, g); // topRight box
+		displaySectionBox(collisionSections[3], 0, SIZE - (collisionSections[1].h), -960 + 200, 100, g); // bottomLeft box
+		displaySectionBox(collisionSections[4], 0, SIZE - (collisionSections[0].h), 0, 100, g); // bottomCenter box
+		displaySectionBox(collisionSections[5], SIZE - (collisionSections[2].w), SIZE - (collisionSections[1].h), -960 + 200, 100, g); // bottomRight box
+	    displaySectionBox(collisionSections[6], SIZE - (collisionSections[2].w), 0, -960 + 200, 860, g); // right center box
+	    displaySectionBox(collisionSections[7], SIZE - (collisionSections[2].w), 0, -960 + 200, 100, g); // topRight box
 	    drawTileBounds(g);
 	}
 	
 	
 	// One issue: the drawing and correcting position are not independent, so at some point I should separate the logic
 	public void displaySectionBox(ChunkSection section, int xOffset, int yOffset, int wOffset, int hOffset, Graphics g) {
-		section.x = x - size/2 + xOffset;
-		section.y = y - size/2 + yOffset;		
-		section.w = size + wOffset;
+		section.x = x - SIZE/2 + xOffset;
+		section.y = y - SIZE/2 + yOffset;		
+		section.w = SIZE + wOffset;
 		section.h = 100 + hOffset;
 		
 		int screenX = Camera.getInstance().projectX(section.x);
 		int screenY = Camera.getInstance().projectY(section.y);
 		
 		// Used to display outline of boxes
-		//g.setColor(Color.red);
-		//g.drawRect(screenX, screenY, section.w, section.h);
+		if (drawBounds) {
+			g.setColor(Color.red);
+			g.drawRect(screenX, screenY, section.w, section.h);
+		}
 	}
 	
 	public int[] getPosition() {
@@ -135,14 +138,14 @@ public class Tile {
 	}
 	
 	public void initDirections() {
-		dirVector.put("topCenter", 		new Vector(x, y - size)); 
-		dirVector.put("topLeft", 		new Vector(x - size, y - size)); 
-		dirVector.put("leftCenter",		new Vector(x - size, y)); 
-		dirVector.put("bottomLeft", 	new Vector(x - size, y + size)); 
-		dirVector.put("bottomCenter", 	new Vector(x, y + size)); 
-		dirVector.put("bottomRight", 	new Vector(x + size, y + size)); 
-		dirVector.put("rightCenter", 	new Vector(x + size, y)); 
-		dirVector.put("topRight", 		new Vector(x + size, y - size));
+		dirVector.put("topCenter", 		new Vector(x, y - SIZE)); 
+		dirVector.put("topLeft", 		new Vector(x - SIZE, y - SIZE)); 
+		dirVector.put("leftCenter",		new Vector(x - SIZE, y)); 
+		dirVector.put("bottomLeft", 	new Vector(x - SIZE, y + SIZE)); 
+		dirVector.put("bottomCenter", 	new Vector(x, y + SIZE)); 
+		dirVector.put("bottomRight", 	new Vector(x + SIZE, y + SIZE)); 
+		dirVector.put("rightCenter", 	new Vector(x + SIZE, y)); 
+		dirVector.put("topRight", 		new Vector(x + SIZE, y - SIZE));
 	}
 	
 	public void setTexture(Image img) {
@@ -160,6 +163,7 @@ public class Tile {
 		Player playerObect = Player.getPlayer();
 		
 		float distance = (float) Math.sqrt((playerObect.x - x) * (playerObect.x - x) + (playerObect.y - y) * (playerObect.y - y));
+		
 		
 		return distance < 10000f;
 	}
