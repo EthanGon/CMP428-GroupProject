@@ -15,6 +15,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 	private Image doubleBuffer;
 	private ChunkManager worldManager;
 	private Player player = new Player(0,0,50,50);
+	private Enemy fox = new Enemy(0,0, 50);
 	
 	
 	public void init() {
@@ -43,6 +44,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 		// DRAW OBJECTS BELOW HERE (ensures world is drawn before objects)
 		g.setColor(Color.red);
 		player.draw(g);
+		fox.draw(g);
 		// DRAW OBJECTS ABOVE HERE 
 		
 		
