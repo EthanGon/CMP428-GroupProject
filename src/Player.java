@@ -39,7 +39,7 @@ public class Player extends Mob {
 		int screenX = Camera.getInstance().projectX(x); 
 		int screenY = Camera.getInstance().projectY(y);
 		
-		g.fillRect(screenX - w, screenY - h, w, h);
+		g.fillRect(screenX - w/2, screenY - h/2, w, h);
 	}
 	
 	public float getXPPercent() {
