@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.Frame;
 
 
 public class Game extends Applet implements Runnable, KeyListener {
@@ -14,11 +15,17 @@ public class Game extends Applet implements Runnable, KeyListener {
 	private Camera mainCam;
 	private Image doubleBuffer;
 	private ChunkManager worldManager;
-	private Player player = new Player(0,0,64,64);
+	private Player player;//
 	private Enemy e1 = new Enemy(0,0);
+
+	private boolean paused = false; //
 	
 	
 	public void init() {
+
+
+		player = new Player(this, 0, 0, 64, 64);//
+		
 		mainCam = new Camera();
 		mainCam.setPosition(player.x, player.y);
 		worldManager = new ChunkManager();
@@ -57,10 +64,11 @@ public class Game extends Applet implements Runnable, KeyListener {
 	public void run() {
 		
 		while (true) {
-			
-			movePlayer();
-			updateCameraPosition();
-			checkCameraBounds();
+			if(!paused) {
+				movePlayer();
+				updateCameraPosition();
+				checkCameraBounds();
+			}
 			
 			repaint();
 			
@@ -76,6 +84,33 @@ public class Game extends Applet implements Runnable, KeyListener {
 		}
 		
 	}
+
+		//WF 3/5/26 pause functions that will pause the game for the upgradeMenu
+	public void pauseGame() {
+		paused = true;
+	}
+	
+	public void resumeGame() {
+		paused = false;
+	}
+	
+	public boolean isPaused() {
+		return paused;
+	}
+	
+	public void showUpgradeMenu() {
+	    pauseGame();
+
+	    UpgradeMenu menu = new UpgradeMenu(
+	        null,
+	        player.getHealthUpgrade(),
+	        player.getStrengthUpgrade(),
+	        player.getDefenseUpgrade(),
+	        this::resumeGame
+	    );
+
+	    menu.setVisible(true);
+	}/////WF
 
 	@Override
 	public void keyPressed(KeyEvent e) {
