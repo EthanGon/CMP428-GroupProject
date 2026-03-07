@@ -121,7 +121,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 		if (key == KeyEvent.VK_W) {player.UP = true;}
 		if (key == KeyEvent.VK_S) {player.DOWN = true;}
 		
-	
 	}
 
 	@Override
