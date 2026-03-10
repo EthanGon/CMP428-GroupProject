@@ -109,16 +109,18 @@ public class UpgradeMenu extends Dialog implements ActionListener, KeyListener {
     
     @Override
     public void keyTyped(KeyEvent e) {
-    	int code = e.getExtendedKeyCode();
+    
+    }
+    
+    @Override
+    public void keyPressed(KeyEvent e) { 
+	int code = e.getExtendedKeyCode();
     	
     	if(code == KeyEvent.VK_ESCAPE) {
     		this.dispose();
     		onClose.run();
     	}
     }
-    
-    @Override
-    public void keyPressed(KeyEvent e) { }
     @Override
     public void keyReleased(KeyEvent e) {}
    

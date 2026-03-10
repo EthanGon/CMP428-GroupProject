@@ -141,9 +141,17 @@ public class Game extends Applet implements Runnable, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if ( curr_state == game_state.paused ) 
-			return;
 		int key = e.getKeyCode();
+		
+		if ((key== KeyEvent.VK_ESCAPE) ) {
+			if (curr_state == game_state.playing) {
+			pause();
+			return;
+			}
+			unpause();
+			return;
+		}
+		
 		
 		if (key == KeyEvent.VK_D) {player.RIGHT = true;}
 		if (key == KeyEvent.VK_A) {player.LEFT = true;}
@@ -154,11 +162,12 @@ public class Game extends Applet implements Runnable, KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		
+		int key = e.getKeyCode();
+		
 		if ( curr_state == game_state.paused ) 
 			return;
-		int key = e.getKeyCode();
-
-		
+	
 		if (key == KeyEvent.VK_D) player.RIGHT = false;
 		if (key == KeyEvent.VK_A) player.LEFT = false;
 		if (key == KeyEvent.VK_W) player.UP = false;
@@ -167,20 +176,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		
-		int key = e.getExtendedKeyCode();
-		
-		if (!(key== KeyEvent.VK_ESCAPE) ) 
-			return;
-		
-		if(curr_state == game_state.playing) {
-		pause();
-		return;
-		}
-		unpause();
-		
-	}
+	public void keyTyped(KeyEvent e) {}
 
 	private  synchronized void pause() {
 		
