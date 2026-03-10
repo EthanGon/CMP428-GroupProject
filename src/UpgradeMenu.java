@@ -21,8 +21,11 @@ import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
-public class UpgradeMenu extends Dialog implements ActionListener {
+
+public class UpgradeMenu extends Dialog implements ActionListener, KeyListener {
 
     private HealthUpgrade health;
     private StrengthUpgrade attack;
@@ -31,6 +34,7 @@ public class UpgradeMenu extends Dialog implements ActionListener {
     private Button healthBtn;
     private Button strengthBtn;
     private Button defenseBtn;
+    private Button resumeBtn;
 
     private Runnable onClose;
 
@@ -41,7 +45,7 @@ public class UpgradeMenu extends Dialog implements ActionListener {
                        Runnable onClose) {
 
         super(owner, "Level Up!", true);
-
+       
         this.health = health;
         this.attack = attack;
         this.defense = defense;
@@ -54,15 +58,25 @@ public class UpgradeMenu extends Dialog implements ActionListener {
         healthBtn = new Button("+10 Health");
         strengthBtn = new Button("+1 Strength");
         defenseBtn = new Button("+1 Defense");
+        resumeBtn = new Button ("Resume");
 
         healthBtn.addActionListener(this);
         strengthBtn.addActionListener(this);
         defenseBtn.addActionListener(this);
+        resumeBtn.addActionListener(this);
+
 
         add(title);
         add(healthBtn);
         add(strengthBtn);
         add(defenseBtn);
+        add(resumeBtn);
+        addKeyListener(this);
+        
+        setFocusable(true);
+        requestFocus();
+        requestFocusInWindow();
+       
 
         setSize(250, 200);
         setLocationRelativeTo(owner);
@@ -70,7 +84,7 @@ public class UpgradeMenu extends Dialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+    	
         if (e.getSource() == healthBtn) {
             health.pushHealthUpgrade();
         }
@@ -82,6 +96,9 @@ public class UpgradeMenu extends Dialog implements ActionListener {
         if (e.getSource() == defenseBtn) {
             defense.pushDefenseUpgrade();
         }
+        if (e.getSource() == resumeBtn) {
+        	dispose();
+        }
 
         dispose();
 
@@ -89,4 +106,20 @@ public class UpgradeMenu extends Dialog implements ActionListener {
             onClose.run();
         }
     }
+    
+    @Override
+    public void keyTyped(KeyEvent e) {
+    	int code = e.getExtendedKeyCode();
+    	
+    	if(code == KeyEvent.VK_ESCAPE) {
+    		this.dispose();
+    		onClose.run();
+    	}
+    }
+    
+    @Override
+    public void keyPressed(KeyEvent e) { }
+    @Override
+    public void keyReleased(KeyEvent e) {}
+   
 }
