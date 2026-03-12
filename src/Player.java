@@ -11,9 +11,18 @@ public class Player extends Mob {
 	public int level = 1;
 	public int xp = 0;
 	public int xpToNextLv = 10;
+
+	//Upgrade helper functions WF
+	private HealthUpgrade health = new HealthUpgrade();
+	private StrengthUpgrade strength = new StrengthUpgrade();
+	private DefenseUpgrade defense = new DefenseUpgrade();
+	private Game game;
 	
-	public Player(int x, int y, int w, int h) {
-		this.playerInstance = this;
+	
+	public Player(Game game, int x, int y, int w, int h) {
+
+		this.game = game; 
+		playerInstance = this;
 		
 		this.x = x;
 		this.y = y;
@@ -64,8 +73,25 @@ public class Player extends Mob {
 		xpToNextLv = (int)(10 * Math.pow(1.25, level - 1));
 		
 		System.out.println("LEVEL UP! level: " + level);
+
+		//WF
+		game.showUpgradeMenu();
 	
 }
+	
+
+	//Helper functions to get the health, strength and defense upgrade
+	public HealthUpgrade getHealthUpgrade() {
+		return health;
+	}
+
+	public StrengthUpgrade getStrengthUpgrade() {
+		return strength;
+	}
+	public DefenseUpgrade getDefenseUpgrade() {
+		return defense;
+	}
+
 	
 
 }
