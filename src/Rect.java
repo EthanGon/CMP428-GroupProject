@@ -35,8 +35,6 @@ public class Rect {
                 (my > y)   &&
                 (my < y+h);
     }
-    
-	
 
  
 

@@ -15,20 +15,12 @@ public class Game extends Applet implements Runnable, KeyListener {
 	private Image doubleBuffer;
 	private ChunkManager worldManager;
 	private Player player = new Player(0,0,64,64);
-	private Monsters monsters = new Monsters(0,0,45,44);
-	private Monsters monstersTwo = new Monsters(0,0,34,34);
 	private Enemy e1 = new Enemy(0,0);
 	
 	
 	public void init() {
 		mainCam = new Camera();
 		mainCam.setPosition(player.x, player.y);
-		
-		
-		//adding mosters
-		mainCam.setPosition(monsters.x, monsters.y);
-		mainCam.setPosition(monstersTwo.x, monstersTwo.y);
-		
 		worldManager = new ChunkManager();
 		
 		this.setSize(1280, 720);
@@ -46,24 +38,13 @@ public class Game extends Applet implements Runnable, KeyListener {
 	
 	// Ideally world should be drawn before anything object, and UI stuff should be drawn after those objects
 	public void paint(Graphics g) {
-		
 		g.clearRect(0, 0, getWidth(), getHeight());
 		worldManager.draw(g);
 		
 		// DRAW OBJECTS BELOW HERE (ensures world is drawn before objects)
 		g.setColor(Color.red);
 		player.draw(g);
-		
-		//monsters
-		g.setColor(Color.blue);
-		monsters.draw(g);
-		
-		g.setColor(Color.green);
-		monstersTwo.draw(g);
-		
 		e1.draw(g);
-		
-		
 		// DRAW OBJECTS ABOVE HERE 
 		
 		
@@ -78,10 +59,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 		while (true) {
 			
 			movePlayer();
-			
-			monsters.chase(player);
-			monstersTwo.chase(player);
-			
 			updateCameraPosition();
 			checkCameraBounds();
 			
@@ -109,7 +86,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 		if (key == KeyEvent.VK_W) {player.UP = true;}
 		if (key == KeyEvent.VK_S) {player.DOWN = true;}
 		
-		
 	
 	}
 
@@ -121,7 +97,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 		if (key == KeyEvent.VK_A) player.LEFT = false;
 		if (key == KeyEvent.VK_W) player.UP = false;
 		if (key == KeyEvent.VK_S) player.DOWN = false;
-		
 		
 	}
 
@@ -142,9 +117,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 		if (player.UP) player.y -= player.moveSpeed;
 		if (player.DOWN) player.y += player.moveSpeed;
 	}
-	
-	
-
 	
 	// draws onto the double buffer first, then when that is done, draw onto screen
 	public void update(Graphics g) {

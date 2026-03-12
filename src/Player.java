@@ -66,6 +66,5 @@ public class Player extends Mob {
 		System.out.println("LEVEL UP! level: " + level);
 	
 }
-	
 
 }
