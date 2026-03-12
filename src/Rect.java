@@ -6,8 +6,6 @@ public class Rect {
 
     int w;
     int h;
-	boolean show_origin = true;
-
 
 
     public Rect(int x, int y, int w, int h) {
@@ -19,14 +17,8 @@ public class Rect {
 
  
     public void draw(Graphics g) {
-
-    	if(show_origin)
         g.drawString(String.format("(%d, %d)", x,y), x, y);
-
         g.drawRect(x, y, w, h);
-    }
-    public void set_show_origin(boolean val) {
-    	show_origin = val;
     }
 
     public boolean overlaps(Rect other) {
