@@ -21,7 +21,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 	game_state curr_state ;
 	
 	private Image pause_img;
-	private Monsters m = new Monsters(0,0, 64,64);
+	private Monster m = new Monster(0,0, 64,64);
 	
 	
 	public void init() {
