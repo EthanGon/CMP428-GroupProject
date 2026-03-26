@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
 import java.awt.Toolkit;
 import java.awt.Frame;
 
@@ -16,23 +17,21 @@ public class Game extends Applet implements Runnable, KeyListener {
 	private Image doubleBuffer;
 	private ChunkManager worldManager;
 	private Player player;//
-	private Enemy e1 = new Enemy(0,0);
+	private MonsterSpawner spawner;
 	private  enum game_state {paused , playing};
 	game_state curr_state ;
 	
 	private Image pause_img;
-	private Monster m = new Monster(0,0, 64,64);
-	
-	
-	public void init() {
 
+	public void init() {
+		
 
 		player = new Player(this, 0, 0, 64, 64);//
 		
 		mainCam = new Camera();
 		mainCam.setPosition(player.x, player.y);
 		worldManager = new ChunkManager();
-		
+		spawner = new MonsterSpawner();
 		this.setSize(1280, 720);
 		pause_img = Toolkit.getDefaultToolkit().getImage("dark_paused.png");
 
@@ -55,8 +54,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 		// DRAW OBJECTS BELOW HERE (ensures world is drawn before objects)
 		g.setColor(Color.red);
 		player.draw(g);
-		m.draw(g);
-		e1.draw(g);
+		
 		
 		
 	/*****	alternate pause screen using a image 	*****
@@ -78,7 +76,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 
 		// DRAW OBJECTS ABOVE HERE 
 		
-		
+		spawner.draw(g);
 		
 		mainCam.drawCameraBounds(g);
 		drawControls(g);
@@ -90,9 +88,9 @@ public class Game extends Applet implements Runnable, KeyListener {
 		while (true) {
 			if(curr_state!= game_state.paused) {
 				movePlayer();
-				m.chase(player);
 				updateCameraPosition();
 				checkCameraBounds();
+				spawner.processSpawner();
 			}
 			
 			repaint();
@@ -160,6 +158,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 		if (key == KeyEvent.VK_A) {player.LEFT = true;}
 		if (key == KeyEvent.VK_W) {player.UP = true;}
 		if (key == KeyEvent.VK_S) {player.DOWN = true;}
+		
 		
 	}
 

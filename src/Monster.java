@@ -7,17 +7,24 @@ public class Monster extends Mob {
 	int h;
 	public boolean UP, DOWN, LEFT, RIGHT;
 	private int moveSpeed = 2;
+	private final int SIZE = 64;
+	private boolean isDead;
+	private static int ID = 0;
+	private int monsterNum;
 
 
-	public Monster(int x, int y, int w, int h) {
+	public Monster(int x, int y) {
+		isDead = false;
+		monsterNum = ID;
+		ID++;
 		
 		
 		this.x = x;
 		this.y = y;
-		this.w = w;
-		this.h = h;
-		System.out.printf("Player Position: x=%d, y=%d\n", x, y);
+		this.w = SIZE;
+		this.h = SIZE;
 		
+		System.out.println("Enemy spawned: #" + monsterNum);
 	}
 		
 	/* Every object that uses the draw method need to follow this format
@@ -32,6 +39,37 @@ public class Monster extends Mob {
 		int screenY = Camera.getInstance().projectY(y);
 		
 		g.fillRect(screenX - w/2, screenY - h/2, w, h);
+	}
+	
+	public boolean isDead() {
+		return isDead;
+	}
+	
+	public void toggleDeadState(boolean val) {
+		this.isDead = val;
+	}
+	
+	public void killEnemy() {
+		this.isDead = true;
+		// TODO: When collision check is added, make sure to ignore that when enemy is dead;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    
+	    if (!(o instanceof Monster)) return false;
+	    Monster m = (Monster)o;
+	    
+	    
+	    return this.monsterNum == m.monsterNum;
+	}
+
+	@Override
+	public int hashCode() {
+	    int result = Integer.hashCode(this.monsterNum);
+	    result = 31 * result + Integer.hashCode(this.monsterNum);
+	    return result;
 	}
 	
 	

@@ -28,7 +28,7 @@ public class Player extends Mob {
 		this.y = y;
 		this.w = w;
 		this.h = h;
-		System.out.printf("Player Position: x=%d, y=%d\n", x, y);
+		
 		
 	}
 	
@@ -90,6 +90,10 @@ public class Player extends Mob {
 	}
 	public DefenseUpgrade getDefenseUpgrade() {
 		return defense;
+	}
+	
+	public void printPosition() {
+		System.out.printf("Player Position: x=%d, y=%d\n", x, y);
 	}
 
 	
