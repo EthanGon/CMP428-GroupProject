@@ -86,6 +86,9 @@ public class Monster extends Mob {
 			if(y < r.y) y+= moveSpeed;
 			
 		}
-
+		
+		public Rect getRect() {
+			return new Rect (x - w / 2 , y - h / 2, w , h);
+		}
 
 }

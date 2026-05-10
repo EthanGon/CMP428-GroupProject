@@ -19,6 +19,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 	private Player player;//
 	private MonsterSpawner spawner;
 	private  enum game_state {paused , playing};
+	private long gameStartTime;
 	game_state curr_state ;
 	
 	private Image pause_img;
@@ -34,6 +35,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 		spawner = new MonsterSpawner();
 		this.setSize(1280, 720);
 		pause_img = Toolkit.getDefaultToolkit().getImage("dark_paused.png");
+		gameStartTime = System.currentTimeMillis();
 
 		curr_state = game_state.playing;
 		thread = new Thread(this);
@@ -45,6 +47,9 @@ public class Game extends Applet implements Runnable, KeyListener {
 		
 	}
 	
+	public int getKillCount() {
+		return spawner.getKillCount();
+	}
 	
 	// Ideally world should be drawn before anything object, and UI stuff should be drawn after those objects
 	public void paint(Graphics g) {
@@ -54,6 +59,10 @@ public class Game extends Applet implements Runnable, KeyListener {
 		// DRAW OBJECTS BELOW HERE (ensures world is drawn before objects)
 		g.setColor(Color.red);
 		player.draw(g);
+		player.drawProjectiles(g);
+		drawControls(g);
+		drawStats(g);
+		
 		
 		
 		
@@ -239,4 +248,17 @@ public class Game extends Applet implements Runnable, KeyListener {
 		g.drawString("Move: WASD\tESC to pause", 10, 40);
 	}
 	
+	public void drawStats(Graphics g) {
+	    long elapsed = (System.currentTimeMillis() - gameStartTime) / 1000;
+	    long minutes = elapsed / 60;
+	    long seconds = elapsed % 60;
+
+	    g.setColor(Color.WHITE);
+	    g.setFont(g.getFont().deriveFont(18f));
+
+	    int rightX = getWidth() - 200;
+	    g.drawString(String.format("Time: %02d:%02d", minutes, seconds), rightX, 30);
+	    g.drawString("Kills: " + spawner.getKillCount(), rightX, 55);
+	    g.drawString("Level: " + player.level, rightX, 80);
+	}
 }

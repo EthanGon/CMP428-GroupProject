@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 
+
+
 public class MonsterSpawner {
-	
-	private int x;
-	private int y;
+
 	private int spawnTime = 4; // seconds
 	private int timer = 0;
-	private boolean isActive;
 	private static MonsterSpawner enemySpawner;
 	private ArrayList<Monster> activeMobs = new ArrayList<Monster>();
 	private ArrayList<Monster> deadEnemies = new ArrayList<Monster>();
+	private int killCount = 0;
 
 
 	
@@ -23,14 +23,7 @@ public class MonsterSpawner {
 	}
 	
 	public void draw(Graphics g) {
-		int newX = Camera.getInstance().projectX(Player.getPlayer().x);
-		int newY = Camera.getInstance().projectY(Player.getPlayer().y);
-		
-		g.setColor(Color.black);
-		g.drawRect(((newX - 5) - Camera.getInstance().screenWidth/2), (newY - 5) - Camera.getInstance().screenHeight/2, 10, 10);
-		
 		for (Monster mob : activeMobs) {
-			
 			if (!mob.isDead()) {
 				mob.draw(g);
 			}
@@ -40,36 +33,46 @@ public class MonsterSpawner {
 		
 	}
 	
-	public void processDeadEnemies() {
-		for (Monster mob : activeMobs) {
-			if (mob.isDead()) {
-				deadEnemies.add(mob);
-			}
-		}
-		
-		for (Monster deadMob : deadEnemies) {
-			if (activeMobs.contains(deadMob)) {
-				activeMobs.remove(deadMob);
-			}
-		}
-		deadEnemies.clear();
-	}
+	 public void processDeadEnemies() {
+	        for (Monster mob : activeMobs) {
+	            if (mob.isDead()) deadEnemies.add(mob);
+	        }
+	        for (Monster deadMob : deadEnemies) {
+	            activeMobs.remove(deadMob);
+	        }
+	        deadEnemies.clear();
+	    }
 	
 	// pseudo timer for spawning, not perfect since it can either be slightly above or below a second.
 	public void processSpawner() {
 		if (timer >= 57 * spawnTime) { 
-			
 			int[] enemyPos = randomEnemyPos();
-			
 			activeMobs.add(new Monster(enemyPos[0], enemyPos[1]));
 			timer = 0;
 		}
 		timer++;
 		
-		for (Monster mob : activeMobs) {
-			
+		Player player = Player.getPlayer();
+		player.updateInvincibility(); 
+		player.updateShooting(activeMobs);
+		
+		for (Monster mob : activeMobs) {	
 			if (!mob.isDead()) {
-				mob.chase(Player.getPlayer());
+				mob.chase(player);
+			
+				if (mob.getRect().overlaps(player.getRect())) {
+					player.takeDamage(10);
+				}
+			
+				for (Projectile p : player.getProjectiles()) {
+					if (!p.expired && p.getRect().overlaps(mob.getRect())) {
+						mob.killEnemy();
+						p.expired = true;
+						player.addXP(5);
+						killCount++;
+					}
+				}
+			
 			}
 		}
 		processDeadEnemies();
@@ -124,15 +127,10 @@ public class MonsterSpawner {
 		
 	}
 	
-	public static MonsterSpawner getInstance() {
-		return enemySpawner;
-	}
-	
+	public static MonsterSpawner getInstance() {return enemySpawner;}
+	public int getKillCount() { return killCount;}
 	// used for testing processDeadEnemies method
-	public void killFirstEnemy() {
-		this.activeMobs.get(0).toggleDeadState(true);
+	public void killFirstEnemy() {this.activeMobs.get(0).toggleDeadState(true);
 	}
-	
-
 	
 }
