@@ -32,10 +32,10 @@ public class Player extends Mob {
     private Game game;
 
 	final static String[] WALK_POSE = {
-		"Walking_Right/Player_R",
-		"Walking_Right/Player_R",
-		"Walking_Left/Player_L",
-		"Walking_Right/Player_R"
+		"Player_R/Player_R",
+		"Player_R/Player_R",
+		"Player_L/Player_L",
+		"Player_R/Player_R"
 	};
 
 
