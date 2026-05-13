@@ -3,8 +3,8 @@ import java.awt.Graphics;
 public class Monster extends Mob {
 	
 	
-	int w;
-	int h;
+	//int w;
+	//int h;
 	public boolean UP, DOWN, LEFT, RIGHT;
 	private int moveSpeed = 2;
 	private final int SIZE = 64;
@@ -12,17 +12,24 @@ public class Monster extends Mob {
 	private static int ID = 0;
 	private int monsterNum;
 
+		//Walk animation. WF
+    final static String[] WALK_POSE = {
+            "Skeleton_RT/Skeleton_RT",
+            "Skeleton_RT/Skeleton_RT",
+            "Skeleton_LT/Skeleton_LT",
+            "Skeleton_RT/Skeleton_RT"
+        };
 
-	public Monster(int x, int y) {
-		isDead = false;
-		monsterNum = ID;
-		ID++;
-		
-		
-		this.x = x;
-		this.y = y;
-		this.w = SIZE;
-		this.h = SIZE;
+
+	public Monster(int x, int y, int w, int h) {
+		super("../images/skeleton", x, y, w, h, 1, WALK_POSE);
+		//isDead = false;
+		monsterNum = ID++;
+		//ID++
+		//this.x = x;
+		//this.y = y;
+		//this.w = SIZE;
+		//this.h = SIZE;
 		
 		System.out.println("Enemy spawned: #" + monsterNum);
 	}
@@ -35,10 +42,17 @@ public class Monster extends Mob {
 	
 	@Override
 	public void draw(Graphics g) {
-		int screenX = Camera.getInstance().projectX(x); 
-		int screenY = Camera.getInstance().projectY(y);
+		if(isDead) return;
+		super.draw(g);
+		/*removed to allow for image of monster to get drawn instead of square
+		 * 
+		//int screenX = Camera.getInstance().projectX(x); 
+		//int screenY = Camera.getInstance().projectY(y);
 		
-		g.fillRect(screenX - w/2, screenY - h/2, w, h);
+		//g.fillRect(screenX - w/2, screenY - h/2, w, h);
+		 *WF
+		 */
+		 
 	}
 	
 	public boolean isDead() {
@@ -76,7 +90,22 @@ public class Monster extends Mob {
 	//chase another character
 		// its gonna happen 60th time per second
 		public void chase(Player r) {
+			if(isDead) return;
+			if(x > r.x){
+				moveLT(moveSpeed);
+			} else if (x < r.x) {
+				moveRT(moveSpeed);
+			}
+			if (y > r.y) {
+				moveUp(moveSpeed);
+			} else if (y < r.y) {
+				moveDN(moveSpeed);
+			}
 			
+			/* Removed to adjust for animation of movement 
+			 * following movement from sprite class. 
+			 * Monster now spawn with walking animation 
+			 * WF.
 			if(x > r.x) x-= moveSpeed;
 			if(x < r.x) x+= moveSpeed;
 			
@@ -84,6 +113,7 @@ public class Monster extends Mob {
 			//coz they go right to left
 			if(y > r.y) y-= moveSpeed;
 			if(y < r.y) y+= moveSpeed;
+			*/
 			
 		}
 		
