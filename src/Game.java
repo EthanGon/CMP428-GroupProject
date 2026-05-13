@@ -16,8 +16,9 @@ public class Game extends Applet implements Runnable, KeyListener {
 	private Camera mainCam;
 	private Image doubleBuffer;
 	private ChunkManager worldManager;
-	private Player player;//
+	private Player player;
 	private MonsterSpawner spawner;
+	private BackgroundMusic backgroundMusic;
 	private  enum game_state {paused , playing};
 	private long gameStartTime;
 	game_state curr_state ;
@@ -36,7 +37,10 @@ public class Game extends Applet implements Runnable, KeyListener {
 		this.setSize(1280, 720);
 		pause_img = Toolkit.getDefaultToolkit().getImage("dark_paused.png");
 		gameStartTime = System.currentTimeMillis();
-
+		//Background music for looping during gameplay.
+		backgroundMusic = new BackgroundMusic("../images/Battle.wav");
+		backgroundMusic.loop();
+		
 		curr_state = game_state.playing;
 		thread = new Thread(this);
 		thread.start();
@@ -214,11 +218,21 @@ public class Game extends Applet implements Runnable, KeyListener {
 	}
 	
 	public void movePlayer() {
-
+		
+		if (player.RIGHT) player.moveRT(player.moveSpeed);
+	    if (player.LEFT)  player.moveLT(player.moveSpeed);
+	    if (player.UP)    player.moveUP(player.moveSpeed);
+	    if (player.DOWN)  player.moveDN(player.moveSpeed);
+		/*
+		 * Removing this as the above will use functions from sprite class
+		 * Allowing for animation of player character with movement. 
+		 * WF
+		 * 
 		if (player.RIGHT) player.x += player.moveSpeed;
 		if (player.LEFT) player.x -= player.moveSpeed;
 		if (player.UP) player.y -= player.moveSpeed;
 		if (player.DOWN) player.y += player.moveSpeed;
+		*/
 	}
 	
 	// draws onto the double buffer first, then when that is done, draw onto screen
