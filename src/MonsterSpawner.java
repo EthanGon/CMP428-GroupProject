@@ -47,7 +47,9 @@ public class MonsterSpawner {
 	public void processSpawner() {
 		if (timer >= 57 * spawnTime) { 
 			int[] enemyPos = randomEnemyPos();
-			activeMobs.add(new Monster(enemyPos[0], enemyPos[1]));
+			//Adjusted constructor to match for animation and sprite.
+			//Monsters get drawn. WF.
+			activeMobs.add(new Monster(enemyPos[0], enemyPos[1], 64, 64));
 			timer = 0;
 		}
 		timer++;
