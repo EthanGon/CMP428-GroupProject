@@ -14,10 +14,10 @@ public class Monster extends Mob {
 
 		//Walk animation. WF
     final static String[] WALK_POSE = {
-            "Skeleton_RT/Skeleton_RT",
-            "Skeleton_RT/Skeleton_RT",
-            "Skeleton_LT/Skeleton_LT",
-            "Skeleton_RT/Skeleton_RT"
+            "Skeleton_R/Skeleton_R",
+            "Skeleton_R/Skeleton_R",
+            "Skeleton_L/Skeleton_L",
+            "Skeleton_R/Skeleton_R"
         };
 
 
