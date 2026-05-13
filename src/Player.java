@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Player extends Mob {
 
-    int w;
-    int h;
+    //int w;
+    //int h;
     public boolean UP, DOWN, LEFT, RIGHT;
     public int moveSpeed = 5;
     public static Player playerInstance;
@@ -31,13 +31,23 @@ public class Player extends Mob {
     private DefenseUpgrade defense = new DefenseUpgrade();
     private Game game;
 
+	final static String[] WALK_POSE = {
+		"Walking_Right/Player_R",
+		"Walking_Right/Player_R",
+		"Walking_Left/Player_L",
+		"Walking_Right/Player_R"
+	};
+
+
     public Player(Game game, int x, int y, int w, int h) {
+		//load images 
+		super("../images/Player", x, y, w, h, 1, WALK_POSE);
         this.game = game;
         playerInstance = this;
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
+        //this.x = x;
+        //this.y = y;
+        //this.w = w;
+        //this.h = h;
         this.currentHealth = health.getCurrentHealth();
     }
 	
@@ -53,10 +63,14 @@ public class Player extends Mob {
 	
 	@Override
     public void draw(Graphics g) {
-        int screenX = Camera.getInstance().projectX(x);
+		super.draw(g);
+        /*
+		*Removed to allow for player image to be drawn.
+		int screenX = Camera.getInstance().projectX(x);
         int screenY = Camera.getInstance().projectY(y);
         g.setColor(Color.RED);
         g.fillRect(screenX - w/2, screenY - h/2, w, h);
+		*/
         drawHUD(g);
     }
 
@@ -181,7 +195,26 @@ public class Player extends Mob {
 		level++;
 		xpToNextLv = (int)(10 * Math.pow(1.25, level - 1));		
 		System.out.println("LEVEL UP! level: " + level);
+		//added pause here to make upgrade menu only appear during level up. WF
+		game.pause();
 		game.showUpgradeMenu();
+	}
+
+	//Allows movement to be updated based on key input thus animation can cycle
+	//WF.
+	public void updateMovement(){
+		if(UP){
+			goUP(moveSpeed);
+		}
+		if(DOWN) {
+			goDN(MoveSpeed);
+		}
+		if(LEFT) {
+			goLT(moveSpeed);
+		}
+		if(RIGHT) {
+			goRT(moveSpeed);
+		}
 	}
 	
 	//Helper functions to get the health, strength and defense upgrade
