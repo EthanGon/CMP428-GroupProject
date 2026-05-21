@@ -1,2 +1,2 @@
-Wilson Fajardo - Attached is video link explaining my contributions to the project. https://youtu.be/czTZ-0ZSPr0
+Wilson Fajardo - Attached is video link explaining my contributions to the project. https://youtu.be/czTZ-0ZSPr0 \
 Ethan Gonzalez - Video playlist of my contributions https://www.youtube.com/playlist?list=PLMYNxhmoFM4bAtE9YoY1K7G3gqgOGdnbG
