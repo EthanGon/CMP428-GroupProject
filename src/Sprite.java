@@ -123,9 +123,9 @@ public class Sprite extends Rect
 	    int screenY = cam.projectY(this.y);
 
 	    if (moving) {
-	        g.drawImage(animation[direction].nextImage(), screenX, screenY, w, h, null);
+	        g.drawImage(animation[direction].nextImage(), screenX - w/2, screenY - h/2, w, h, null);
 	    } else {
-	        g.drawImage(animation[direction].stillImage(), screenX, screenY, w, h, null);
+	        g.drawImage(animation[direction].stillImage(), screenX - w/2, screenY - h/2, w, h, null);
 	    }       
 	    
 	    // Reset moving flag for the next frame

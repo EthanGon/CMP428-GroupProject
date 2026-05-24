@@ -61,7 +61,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 		worldManager.draw(g);
 		
 		// DRAW OBJECTS BELOW HERE (ensures world is drawn before objects)
-		g.setColor(Color.red);
 		player.draw(g);
 		player.drawProjectiles(g);
 		drawControls(g);
@@ -92,7 +91,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 		spawner.draw(g);
 		
 		mainCam.drawCameraBounds(g);
-		drawControls(g);
 	}
 
 	
@@ -193,7 +191,7 @@ public class Game extends Applet implements Runnable, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {}
 
-	private  synchronized void pause() {
+	public synchronized void pause() {
 		
 		 curr_state = game_state.paused ;
 			 System.out.println("game paused");
@@ -274,5 +272,6 @@ public class Game extends Applet implements Runnable, KeyListener {
 	    g.drawString(String.format("Time: %02d:%02d", minutes, seconds), rightX, 30);
 	    g.drawString("Kills: " + spawner.getKillCount(), rightX, 55);
 	    g.drawString("Level: " + player.level, rightX, 80);
+	    g.drawString("Wave: " + spawner.getWaveManager().getWave(), rightX, 105);
 	}
 }

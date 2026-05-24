@@ -1,4 +1,7 @@
 import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
 public class Monster extends Mob {
 	
@@ -6,31 +9,39 @@ public class Monster extends Mob {
 	//int w;
 	//int h;
 	public boolean UP, DOWN, LEFT, RIGHT;
-	private int moveSpeed = 2;
+	protected int moveSpeed = 2;
 	private final int SIZE = 64;
 	private boolean isDead;
 	private static int ID = 0;
 	private int monsterNum;
+	private Image sprite = new ImageIcon(System.getProperty("user.dir") + "/images/Skeleton/Skeleton_L/Skeleton_L_0.png").getImage();
+	protected int maxHp = 30;
+	protected int currentHp = 30;
+	protected int moveSpeed_base = 2;
 
 		//Walk animation. WF
-    final static String[] WALK_POSE = {
-            "Skeleton_R/Skeleton_R",
-            "Skeleton_R/Skeleton_R",
-            "Skeleton_L/Skeleton_L",
-            "Skeleton_R/Skeleton_R"
-        };
+	final static String[] WALK_POSE = {
+		    "",
+		    "",
+		    "",
+		    ""
+		};
 
 
+    public void takeDamage(int amount) {
+        currentHp -= amount;
+        if (currentHp <= 0) killEnemy();
+    }
+    
 	public Monster(int x, int y, int w, int h) {
-		super("../images/skeleton", x, y, w, h, 1, WALK_POSE);
-		//isDead = false;
+		super("images/Skeleton", x, y, w, h, 1, WALK_POSE);
+		isDead = false;
 		monsterNum = ID++;
-		//ID++
+
 		//this.x = x;
 		//this.y = y;
 		//this.w = SIZE;
 		//this.h = SIZE;
-		
 		System.out.println("Enemy spawned: #" + monsterNum);
 	}
 		
@@ -43,7 +54,18 @@ public class Monster extends Mob {
 	@Override
 	public void draw(Graphics g) {
 		if(isDead) return;
-		super.draw(g);
+		int screenX = Camera.getInstance().projectX(x);
+		int screenY = Camera.getInstance().projectY(y);
+		g.drawImage(sprite, screenX - w/2, screenY - h/2, w, h, null);
+		int barX = screenX - w/2;
+		int barY = screenY - h/2 - 10;
+		float hpPercent = (float) currentHp / maxHp;
+		g.setColor(Color.RED);
+		g.fillRect(barX, barY, w, 6);
+		g.setColor(Color.GREEN);
+		g.fillRect(barX, barY, (int)(w * hpPercent), 6);
+		g.setColor(Color.WHITE);
+		g.drawRect(barX, barY, w, 6);
 		/*removed to allow for image of monster to get drawn instead of square
 		 * 
 		//int screenX = Camera.getInstance().projectX(x); 
@@ -97,7 +119,7 @@ public class Monster extends Mob {
 				moveRT(moveSpeed);
 			}
 			if (y > r.y) {
-				moveUp(moveSpeed);
+				moveUP(moveSpeed);
 			} else if (y < r.y) {
 				moveDN(moveSpeed);
 			}

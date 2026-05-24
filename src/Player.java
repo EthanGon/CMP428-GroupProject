@@ -197,7 +197,6 @@ public class Player extends Mob {
 		System.out.println("LEVEL UP! level: " + level);
 		//added pause here to make upgrade menu only appear during level up. WF
 		game.pause();
-		game.showUpgradeMenu();
 	}
 
 	//Allows movement to be updated based on key input thus animation can cycle
@@ -207,7 +206,7 @@ public class Player extends Mob {
 			goUP(moveSpeed);
 		}
 		if(DOWN) {
-			goDN(MoveSpeed);
+			goDN(moveSpeed);
 		}
 		if(LEFT) {
 			goLT(moveSpeed);

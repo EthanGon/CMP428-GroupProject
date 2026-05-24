@@ -14,12 +14,13 @@ public class MonsterSpawner {
 	private ArrayList<Monster> activeMobs = new ArrayList<Monster>();
 	private ArrayList<Monster> deadEnemies = new ArrayList<Monster>();
 	private int killCount = 0;
+	private WaveManager waveManager;
 
 
 	
 	public MonsterSpawner() {
-		this.enemySpawner = this;
-		
+	    this.enemySpawner = this;
+	    this.waveManager = new WaveManager();
 	}
 	
 	public void draw(Graphics g) {
@@ -45,12 +46,13 @@ public class MonsterSpawner {
 	
 	// pseudo timer for spawning, not perfect since it can either be slightly above or below a second.
 	public void processSpawner() {
-		if (timer >= 57 * spawnTime) { 
-			int[] enemyPos = randomEnemyPos();
-			//Adjusted constructor to match for animation and sprite.
-			//Monsters get drawn. WF.
-			activeMobs.add(new Monster(enemyPos[0], enemyPos[1], 64, 64));
-			timer = 0;
+		waveManager.update();
+		if (timer >= 57 * waveManager.getSpawnTime()) {
+		    for (int i = 0; i < waveManager.getSpawnCount(); i++) {
+		        int[] pos = randomEnemyPos();
+		        activeMobs.add(spawnMonsterByType(pos[0], pos[1]));
+		    }
+		    timer = 0;
 		}
 		timer++;
 		
@@ -68,13 +70,14 @@ public class MonsterSpawner {
 			
 				for (Projectile p : player.getProjectiles()) {
 					if (!p.expired && p.getRect().overlaps(mob.getRect())) {
-						mob.killEnemy();
-						p.expired = true;
-						player.addXP(5);
-						killCount++;
+					    mob.takeDamage(p.getDamage());
+					    p.expired = true;
+					    if (mob.isDead()) {
+					        player.addXP(getXPForMonster(mob));
+					        killCount++;
+					    }
 					}
 				}
-			
 			}
 		}
 		processDeadEnemies();
@@ -128,6 +131,26 @@ public class MonsterSpawner {
 		return result;
 		
 	}
+	
+	private Monster spawnMonsterByType(int x, int y) {
+	    int type = waveManager.getMonsterType();
+	    switch (type) {
+	        case 1: return new FastMonster(x, y);
+	        case 2: return new TankMonster(x, y);
+	        case 3: return new BossMonster(x, y);
+	        default: return new Monster(x, y, 64, 64);
+	    }
+	}
+
+	
+	private int getXPForMonster(Monster mob) {
+	    if (mob instanceof BossMonster) return 100;
+	    if (mob instanceof TankMonster) return 25;
+	    if (mob instanceof FastMonster) return 10;
+	    return 5;
+	}
+
+	public WaveManager getWaveManager() { return waveManager; }
 	
 	public static MonsterSpawner getInstance() {return enemySpawner;}
 	public int getKillCount() { return killCount;}
